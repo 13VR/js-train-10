@@ -15,18 +15,13 @@ function customAssign(...objects) {
   if (Object(objects.length) < 2) {
     return "Помилка: Має бути передано принаймні два об'єкти.";
   }
-  const obj = Object.assign(...objects);
-
-  const keys = Object.values(obj);
-  for (const value in obj) {
-    // console.log(value);
-    console.log(String(obj[value]));
-    if (keys.hasOwnProperty("number")) {
-      console.log(value);
-      return value.toString();
+  const mergedObject = Object.assign({}, ...objects);
+  for (const key in mergedObject) {
+    if (typeof mergedObject[key] === "number") {
+      mergedObject[key] = String(mergedObject[key]);
     }
-    return obj;
   }
+  return mergedObject;
 }
 
 // Приклад використання функції customAssign
@@ -83,15 +78,14 @@ function customObjectFromEntries(entries) {
   if (!Array.isArray(entries)) {
     return "Помилка: Вхідний аргумент має бути масивом.";
   }
-  // const obj = {};
-  for (const [key, value] of entries) {
+  const processedEntries = entries.map(([key, value]) => {
     if (typeof key === "number") {
-      const string = key.toString();
-      // return [string, value];
+      value = String(key);
     }
     return [key, value];
-  }
-  return Object.fromEntries(Object.entries(obj));
+  });
+  const obj = Object.fromEntries(processedEntries);
+  return obj;
 }
 
 console.log("Завдання: 3 ==============================");
@@ -355,7 +349,7 @@ function convertArrayToObj(arr) {
       }
       obj[key] = value;
     }
-    return Object.fromEntries(Object.entries(obj));
+    return Object.fromEntries(arr);
   }
 }
 
